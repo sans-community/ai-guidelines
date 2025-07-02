@@ -25,6 +25,7 @@ v1.1
 - Jason Vest, Binary Defense
 - Eoin Wickens, Hidden Layer
 - Sounil Yu, Knostic
+- Manish Kumar Yadav,SAP
 
 ## Overview
 
