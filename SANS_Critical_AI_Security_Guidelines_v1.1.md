@@ -26,6 +26,7 @@ v1.1
 - Jason Vest, Binary Defense
 - Eoin Wickens, Hidden Layer
 - Sounil Yu, Knostic
+- Manish Kumar Yadav,SAP
 
 ## Overview
 
@@ -55,6 +56,8 @@ As organizations incorporate AI into their operations, they must seek and adopt 
 Effective access controls are fundamental to securing AI modes, their associated infrastructure, and perhaps most paramount - protecting the data. Organizations must implement strong authentication, authorization, and monitoring mechanisms to prevent unauthorized access and model tampering. This section explores best practices for restricting access to AI models, vector databases, and inference processes.
 
 > We've seen AI access controls range from hard-coded privileges to zero trust principles, especially as access extends beyond individual users to connected devices, applications, APIs, and other systems. As you deploy AI capabilities throughout your organization, we recommend utilizing least privilege principles and integrating with your current authentication mechanisms. However, if you plan to move toward stronger access controls, such as zero trust, consider AI in this transition.
+
+One of the most effective strategies for mitigating security risks is adhering to the principle of least privilege. This principle ensures that only a minimal set of users, devices, or systems are granted access to the training data, AI models, and associated resources, and only to the extent necessary to perform their specific roles. By limiting access to essential personnel or systems, organizations can significantly reduce the attack surface and the risk of accidental or malicious exposure of sensitive data.
 
 ### Protect Your Model Parameters
 
@@ -200,6 +203,8 @@ With the evolving regulatory landscape surrounding AI, organizations must establ
 #### Regularly Test and Tune LLM Application/Model
 
 LLM applications and, if possible, the underlying models they employ should be regularly tested to ensure the application’s alignment to confirm it behaves as expected and desired. Though models employed should have been red teamed throughout their development prior to deployment, regular assessments of the deployed models and applications should still be performed. Test results could suggest the need for additional mitigations, tuning, or, if applicable (re)training, to ensure a trustworthy implementation.
+
+In addition to red teaming, organizations should conduct regular penetration testing of the AI infrastructure, including vector databases, APIs, and connected systems. Penetration testing evaluates the security posture of the entire ecosystem by identifying exploitable vulnerabilities, such as weak authentication mechanisms, misconfigured permissions, or unprotected endpoints. These tests should be complemented by monitoring and logging mechanisms to detect and respond to suspicious activity in real time.
 
 #### The Biggest Risk of AI Is Not Using AI
 
