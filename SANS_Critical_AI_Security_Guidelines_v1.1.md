@@ -8,6 +8,7 @@ v1.1
 - Sarthak Agrawal, U.S. Congress
 - Brett Arion, Binary Defense
 - Matt Bromiley, Prophet Security
+- Chris Cochran, Commandant AI
 - Ron F. Del Rosario, SAP
 - Mick Douglas, InfoSec Innovations
 - David Hoelzer, Occulumen
@@ -247,6 +248,43 @@ Though not mandated, tracking to and adherence with other AI/LLM security framew
 
 Although useful, overreliance on system prompts for mitigation of input/output proves suboptimal. The ease with which a system prompt can be updated to better align a model’s behavior is both its strength and its weakness. System prompts should be thought of as a virtual/ temporary/incomplete and tactical mitigation only. Furthermore, system prompts should not be overwritten by user prompts, requiring additional layers of guardrails. Depending upon the scope of the change needed, fine-tuning to better align the model could prove necessary.
 
+#### Secure Agentic Systems and AI Autonomy Controls
+The rapid advancement of agent-based architectures (MCP and A2A for example), particularly those leveraging LLMs as autonomous entities, has introduced new dimensions of functionality, and with them, a range of complex risks. Agentic AI systems are now capable of chaining tasks, invoking functions, retrieving information, and acting independently across platforms. These capabilities require security teams to rethink traditional boundaries and controls.
+One of the primary concerns with agentic systems is scope creep. Without explicit constraints, agents may invoke unintended tools, access sensitive data, or generate unpredictable behaviors. This could have unintended secondary effects. In response, organizations must enforce focused functionality and apply the principles of least privilege not only to users, but to the agents themselves.
+Effective deployment of agentic AI should include:
+Defined Function Scope: Agents must be configured with clearly delineated permissions. Limit access to only the tools and data required to complete the agent’s specific task.
+
+
+Execution Isolation: Use sandboxing or containerization to restrict the operating environment of the agent. This prevents lateral movement and limits potential impact from compromise.
+
+
+API and Function Call Controls: Gate access to external actions via allowlists and validate agent-initiated requests at runtime. Avoid exposing critical operations without human oversight.
+
+
+Feedback Loops and Escalation: Agents must include confidence thresholds and fallback mechanisms that escalate uncertain decisions to a human operator.
+
+
+As agent-based workflows expand, it becomes essential to monitor for autonomy-related anomalies, including excessive tool invocation, task loops, or deviation from expected outputs. Integrating behavioral baselining and anomaly detection will provide needed assurance and containment for autonomous systems in production environments.
+
+#### Incident Response and Forensics for AI Systems
+Despite best efforts in security architecture, AI systems, particularly those incorporating public models, RAG pipelines, or complex agent interactions, remain susceptible to compromise. The ability to detect, respond to, and investigate AI-specific threats is critical to maintaining operational resilience and stakeholder trust.
+AI-specific incident response (IR) must evolve beyond traditional playbooks. Model poisoning, prompt injection, data leakage through output generation, and unauthorized model extraction represent new categories of security events that require dedicated preparation.
+To effectively investigate and contain AI incidents, organizations should:
+Capture Audit Trails Across the Stack: Ensure logs include prompt inputs, augmentation sources (like VectorDB queries), model outputs, function calls, and tool invocations.
+
+
+Monitor for Indicators of Model Tampering: Sudden changes in inference behavior, drift in outputs, or increased refusal rates may indicate adversarial manipulation or unauthorized updates.
+
+
+Employ Detection on Prompt and Output Layers: Include pattern-based and behavioral monitoring to identify jailbreak attempts, abuse of multilingual prompts, or bypasses via encoding/compression.
+
+
+Establish a Model Integrity Baseline: Use cryptographic hashes, model registries, and periodic validation checks to confirm deployed models have not been altered.
+
+
+Playbooks should include specific procedures for model rollback, access revocation, retraining workflows, and data re-validation. Additionally, red teaming and tabletop simulations tailored to LLM misuse scenarios will help test readiness and improve recovery times.
+
+
 ## Conclusion
 
 As AI adoption accelerates, organizations must continue to take proactive approaches to security, ensuring that AI systems are not only effective but also resilient against threats. Implementing robust access controls, data protection measures, and secure deployment strategies is essential to safeguarding AI models from misuse. 
@@ -254,3 +292,26 @@ As AI adoption accelerates, organizations must continue to take proactive approa
 Governance, risk management, and compliance frameworks play a critical role in responsible AI implementations. With continuous testing, monitoring, and adherence to evolving regulatory requirements, organizations can maintain AI reliability and mitigate potential security risks. Furthermore, a multilayered approach to inference security, including strict input validation and output filtering, is necessary to prevent model exploitation. 
 
 AI adoption presents transformative opportunities but also introduces significant security challenges. Organizations that establish strong security foundations and embrace best practices will be well positioned to leverage the transformative potential while minimizing enterprise risk. By prioritizing security and compliance, organizations can ensure their AI- driven innovations remain effective and safe in this complex, ever-evolving landscape.
+
+
+GLOSSARY OF TERMS
+1. Large Language Model (LLM)
+A type of generative AI model trained on massive datasets to understand and generate natural language. LLMs are used for chatbots, summarization, translation, and more.
+2. Retrieval-Augmented Generation (RAG)
+A technique that enhances LLMs by combining them with external vector databases to retrieve relevant context before generation. This improves accuracy but introduces augmentation-related risks.
+3. Vector Database (VectorDB)
+A specialized database that stores data in high-dimensional vector space, enabling fast semantic search. Often used in RAG to serve context to LLMs.
+4. AI Bill of Materials (AIBOM)
+A detailed record of datasets, models, code, and dependencies used in an AI system, modeled after software SBOMs, for supply chain visibility and governance.
+5. Prompt Injection
+An adversarial attack where inputs are crafted to override model instructions or extract confidential information. A leading threat to LLM systems.
+6. Inference Guardrails
+Policy-enforcing filters applied to model inputs and outputs to prevent harmful, biased, or unauthorized responses during inference.
+7. Model Registry
+A centralized repository to manage, version, and govern ML models throughout their lifecycle, ensuring reproducibility, rollback, and access control.
+8. Multimodal Model
+An AI system capable of interpreting and generating multiple data types, text, images, audio, and others increasing utility and complexity of securing interactions.
+9. Trusted Execution Environment (TEE)
+A secure enclave within a processor that protects sensitive computations and model data from external threats, even on compromised hosts.
+10. Drift Monitoring
+A process that continuously tracks model performance over time to detect behavioral or data drift, helping prevent unintentional degradation or compromise.
