@@ -26,6 +26,7 @@ v1.1
 - Jason Vest, Binary Defense
 - Eoin Wickens, Hidden Layer
 - Sounil Yu, Knostic
+- Rakesh Sharma, CYAIFI 
 
 ## Overview
 
@@ -114,6 +115,8 @@ Sites such as HuggingFace are wonderful resources for datasets, models, and vari
 
 Models also may be created by bad actors with architectural backdoors in them. The idea of a backdoor like this would be to invoke a specific behavior in response to a specific input. Once a backdoor is created inside of a model, it can be difficult, if not impossible, to remove it via fine turning. This becomes an issue if a user inadvertently triggers the backdoor or, if exposed outside the organization, a bad actor looks for their backdoor [across a swath of models](www.anthropic.com/research/sleeper-agents-training-deceptive-llms-that-persist-through-safety-training).
 
+All external AI models or datasets must go through a secure import pipeline that scans for malware or malicious code, tests the model in a sandbox, and validates performance on known benign and adversarial samples before deployment.
+
 This becomes even more important to think about as we move toward leveraging AI for the creation of agent-based solutions, especially in the LLM world. Imagine a public LLM that is leveraged to generate code that is used to issue web or other search requests by an agent. Questions include: 
 
 - How much effort would be required to properly sandbox this generated code?
@@ -147,6 +150,10 @@ Prompt injection represents the most common LLM application attack vector and wa
 Adversaries employ prompt injection to get the LLM application to do or say something it should not. Although trying to prevent or detect the attempted inject should be considered necessary, the complexity and nuance of LLM applications make obvious that merely controlling the input should not be considered sufficient. Additionally, prompt injection primarily focuses on intentional abuse or misuse, yet inputs could still result in undesirable LLM application responses or behaviors. Much as validation and filtering of inputs proves vital, so too is properly handling and assessing outputs. Keep in mind that, like inputs, multiple layers and levels of output might exist in a complex LLM application, such as one that employs web search, function calling, tool use, or downstream LLMs. Output should not be construed to refer only to what would be presented to an end user. 
 
 In multi-user environments or applications where prompts are composed from multiple sources, input segregation is critical. By tagging or isolating user-provided inputs from system- generated context, organizations can reduce the risk of indirect prompt injection.
+
+#### Adversarial Testing and Model Hardening
+
+Organizations should adopt a comprehensive adversarial robustness strategy in their secure AI development lifecycle that includes regular adversarial testing, red-teaming, and model hardening. This involves simulating attacks using malicious inputs to evaluate vulnerabilities, especially for critical or third-party models.
 
 #### Employ the Principle of Focused Functionality (and Agency)
 
@@ -187,7 +194,7 @@ Although not limited to interactions through APIs, adversaries can easily automa
 
 ### Monitoring
 
-Effective monitoring is essential to maintaining AI security over time. AI models and systems must be continuously observed for performance degradation, adversarial attacks, and unauthorized access. Implementing logging, anomaly detection, and drift monitoring ensures AI applications remain reliable and aligned with intended behaviors. Figure 2 outlines best practices for tracking inference refusals and securing sensitive AI-generated outputs.
+Effective monitoring is essential to maintaining AI security over time. AI models and systems must be continuously observed for performance degradation, adversarial attacks, and unauthorized access. AI monitoring should be integrated into existing SOC and SIEM workflows to ensure it isn't a blind spot in enterprise security. Implementing logging, anomaly detection, and drift monitoring ensures AI applications remain reliable and aligned with intended behaviors. Figure 2 outlines best practices for tracking inference refusals and securing sensitive AI-generated outputs.
 
 ![Figure 2 - Monitoring Best Practices](./figures/figure2-monitoring_best_practices.png)
 
@@ -195,7 +202,9 @@ Effective monitoring is essential to maintaining AI security over time. AI model
 
 Organizations must align AI initiatives with industry regulations, implement risk- based decision-making processes, and establish frameworks for secure deployment. Additionally, continuous testing and evaluation of AI systems are crucial for maintaining integrity, detecting vulnerabilities, and ensuring compliance with evolving standards. This section explores essential governance structures, regulatory considerations, and best practices for mitigating AI-related risks. 
 
-With the evolving regulatory landscape surrounding AI, organizations must establish governance frameworks that align with industry standards and legal requirements. This section discusses the importance of AI risk management, model registries, AI bill of materials (AIBOMs), and regulatory adherence to ensure ethical and compliant AI usage.
+With the evolving regulatory landscape surrounding AI, organizations must establish governance frameworks that align with industry standards and legal requirements. This section discusses the importance of AI risk management, model registries, AI bill of materials (AIBOMs), and regulatory adherence to ensure ethical and compliant AI usage. 
+
+Organizations should formalize an AI Model Risk Management (MRM) program to systematically identify, assess, and mitigate risks across the AI model lifecycle. Similar to practices in the financial sector, an AI MRM framework ensures responsible development and use by addressing risks like bias, security flaws, and performance issues. The Cloud Security Alliance recommends using tools such as model cards, documented risk assessments, and failure scenario planning. Integrating MRM into existing risk management practices ensures AI systems are treated with the same rigor as other critical assets and aligns with emerging AI regulations and standards. [CSA's AI MRM framework](https://cloudsecurityalliance.org/press-releases/2024/07/24/cloud-security-alliance-issues-ai-model-risk-management-framework).
 
 #### Regularly Test and Tune LLM Application/Model
 
@@ -211,7 +220,7 @@ To ease stakeholder or GRC concerns, establish an AI GRC board or incorporate AI
 
 #### Maintain an AI Bill-Of-Materials
 
-LLM applications depend upon a complex underlying ecosystem for their functionality. Modeled after software bill of materials (SBOM), creation and maintenance of an AIBOM can provide better visibility into relevant aspects of the AI supply chain, including considerations of dataset and model provenance. AIBOMs contain technical details that are useful to adversaries in attacking LLM applications. Care should be taken to limit the disclosure of AIBOMs.
+LLM applications depend upon a complex underlying ecosystem for their functionality. To secure this ecosystem, organizations should “vet and trust, but verify” all third-party AI models and open-source components. Modeled after software bill of materials (SBOM), creation and maintenance of an AIBOM can provide better visibility into relevant aspects of the AI supply chain, including considerations of dataset, model provenance, dependencies and versioning. AIBOMs contain technical details that are useful to adversaries in attacking LLM applications. Care should be taken to limit the disclosure of AIBOMs.
 
 #### Model Registries
 
@@ -229,7 +238,7 @@ dependencies, preventing unauthorized changes that could introduce vulnerabiliti
 
 Much like the AI landscape itself, the legal and regulatory environment in which AI implementations operate is both complex and rapidly changing. Failure to adhere to legal or regulatory mandates can prove costly. Table 1 lists sample AI security and regulatory Frameworks that organizations may need to comply with, depending on the use of their data. For example, not every organization will need to comply with ELVIS Act, but it lays the foundation for codified prohibitive use of AI.
 
-Though not mandated, tracking to and adherence with other AI/LLM security frameworks or guidance like SANS AI Security Controls, NIST AI Risk Management Framework, MITRE ATLAS,™ or OWASP Top 10 for LLM also can prove beneficial.
+Though not mandated, tracking to and adherence with other AI/LLM security frameworks or guidance like SANS AI Security Controls, NIST AI Risk Management Framework, CSA’s AI Controls Matrix, MITRE ATLAS,™ or OWASP Top 10 for LLM also can prove beneficial.
 
 **Table 1: Sample AI Security and Regulatory Frameworks**
 
@@ -271,6 +280,7 @@ Despite best efforts in security architecture, AI systems, particularly those in
 AI-specific incident response (IR) must evolve beyond traditional playbooks. Model poisoning, prompt injection, data leakage through output generation, and unauthorized model extraction represent new categories of security events that require dedicated preparation.
 To effectively investigate and contain AI incidents, organizations should:
 Capture Audit Trails Across the Stack: Ensure logs include prompt inputs, augmentation sources (like VectorDB queries), model outputs, function calls, and tool invocations.
+These logs should be protected and retained to support forensic analysis.
 
 
 Monitor for Indicators of Model Tampering: Sudden changes in inference behavior, drift in outputs, or increased refusal rates may indicate adversarial manipulation or unauthorized updates.
@@ -315,3 +325,5 @@ An AI system capable of interpreting and generating multiple data types, text, i
 A secure enclave within a processor that protects sensitive computations and model data from external threats, even on compromised hosts.
 10. Drift Monitoring
 A process that continuously tracks model performance over time to detect behavioral or data drift, helping prevent unintentional degradation or compromise.
+11. Adversarial Testing 
+Techniques in AI used to improve the robustness and security of models against malicious or unexpected inputs.
